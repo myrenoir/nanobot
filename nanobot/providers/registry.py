@@ -199,6 +199,28 @@ PROVIDERS: tuple[ProviderSpec, ...] = (
         model_overrides=(),
     ),
 
+    # GAISF: OpenAI-compatible endpoint (Azure-style deployments).
+    # Treat as gateway so it can route any OpenAI model name like "gpt-5-2".
+    # LiteLLM expects the provider prefix "azure/" for Azure OpenAI.
+    ProviderSpec(
+        name="gaisf",
+        keywords=("openai", "gpt"),
+        env_key="AZURE_API_KEY",
+        display_name="GAISF (Azure OpenAI)",
+        litellm_prefix="azure",
+        skip_prefixes=("azure/",),
+        env_extras=(
+            ("AZURE_API_VERSION", "2024-02-15-preview"),
+        ),
+        is_gateway=True,
+        is_local=False,
+        detect_by_key_prefix="",
+        detect_by_base_keyword="deployments",
+        default_api_base="",
+        strip_model_prefix=True,
+        model_overrides=(),
+    ),
+
     # DashScope: Qwen models, needs "dashscope/" prefix.
     ProviderSpec(
         name="dashscope",
